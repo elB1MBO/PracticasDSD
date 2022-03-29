@@ -2,6 +2,7 @@
 
 from asyncio import protocols, transports
 from http import client
+from pydoc import cli
 from calculadora import Calculadora
 
 from thrift import Thrift
@@ -22,13 +23,37 @@ transport.open()
 print("Hacemos ping al server")
 client.ping()
 
-resultado = client.suma(4,2)
-print("4+2="+str(resultado))
-resultado = client.resta(1,3)
-print("1-3="+str(resultado))
-resultado = client.mult(3,2)
-print("2*2="+str(resultado))
-resultado = client.div(10,2)
-print("10/5="+str(resultado))
+operador = ""
+salir = False
+while salir != True:
+
+    operador = input("Introduzca el operador (pulse C para salir): ")
+    if operador == "C":
+        salir=True
+    else:
+        n1 = input("Introduzca el primer número: ")
+        n1 = float(n1)
+        if operador != "!":
+            n2 = input("Introduzca el segundo numero: ")
+            n2 = float(n2)
+        if operador == "+":
+            resultado = client.suma(n1,n2)
+            print(str(n1)+"+"+str(n2)+"="+str(resultado))
+        if operador == "-":
+            resultado = client.resta(n1,n2)
+            print(str(n1)+"-"+str(n2)+"="+str(resultado))
+        if operador == "x":
+            resultado = client.mult(n1,n2)
+            print(str(n1)+"*"+str(n2)+"="+str(resultado))
+        if operador == "/":
+            resultado = client.div(n1,n2)
+            print(str(n1)+"/"+str(n2)+"="+str(resultado))
+        if operador == "!":
+            resultado = client.fact(n1)
+            print(str(n1)+"! ="+str(resultado))
+        if operador == "p":
+            resultado = client.pot(n1,n2)
+            print("Resultado potencia: "+str(resultado))
+        
 
 transport.close()
