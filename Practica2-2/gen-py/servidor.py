@@ -1,3 +1,5 @@
+from locale import str
+from builtins import float, print, range
 from asyncio import transports
 from cgitb import handler
 import glob
@@ -57,7 +59,44 @@ class CalculadoraHandler:
                 factorial *= n1
                 n1 -= 1
             return factorial
-            
+    def sumaVectores(self, v1, v2):
+        tam = int(len(v1))
+        print("Vectores: ")
+        print(v1, v2)
+        print("Suma de los vectores ")
+        resultado = [float] * tam
+        for i in range(tam):
+            resultado[i] = v1[i] + v2[i]
+        return resultado
+    def restaVectores(self, v1, v2):
+        tam = int(len(v1))
+        print("Vectores: ")
+        print(v1, v2)
+        print("Resta de los vectores ")
+        resultado = [float] * tam
+        for i in range(tam):
+            resultado[i] = v1[i] - v2[i]
+        return resultado
+    def multVectores(self, v1, v2):
+        tam = int(len(v1))
+        print("Vectores: ")
+        print(v1, v2)
+        print("Producto de los vectores ")
+        resultado = [float] * tam
+        for i in range(tam):
+            resultado[i] = v1[i] * v2[i]
+        return resultado
+    def divVectores(self, v1, v2):
+        tam = int(len(v1))
+        print("Vectores: ")
+        print(v1, v2)
+        print("Division de los vectores ")
+        resultado = [float] * tam
+        for i in range(tam):
+            resultado[i] = v1[i] / v2[i]
+        return resultado
+
+        
 #Y lanzamos el servidor
 if __name__ == "__main__":
     handler = CalculadoraHandler()

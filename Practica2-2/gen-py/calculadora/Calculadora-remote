@@ -29,10 +29,13 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('  double resta(double num1, double num2)')
     print('  double mult(double num1, double num2)')
     print('  double div(double num1, double num2)')
-    print('  double mod(double num1, double num2)')
     print('  double pot(double num1, double num2)')
     print('  double raiz(double num1)')
     print('  double fact(double num1)')
+    print('   sumaVectores( v1,  v2)')
+    print('   restaVectores( v1,  v2)')
+    print('   multVectores( v1,  v2)')
+    print('   divVectores( v1,  v2)')
     print('')
     sys.exit(0)
 
@@ -142,12 +145,6 @@ elif cmd == 'div':
         sys.exit(1)
     pp.pprint(client.div(eval(args[0]), eval(args[1]),))
 
-elif cmd == 'mod':
-    if len(args) != 2:
-        print('mod requires 2 args')
-        sys.exit(1)
-    pp.pprint(client.mod(eval(args[0]), eval(args[1]),))
-
 elif cmd == 'pot':
     if len(args) != 2:
         print('pot requires 2 args')
@@ -165,6 +162,30 @@ elif cmd == 'fact':
         print('fact requires 1 args')
         sys.exit(1)
     pp.pprint(client.fact(eval(args[0]),))
+
+elif cmd == 'sumaVectores':
+    if len(args) != 2:
+        print('sumaVectores requires 2 args')
+        sys.exit(1)
+    pp.pprint(client.sumaVectores(eval(args[0]), eval(args[1]),))
+
+elif cmd == 'restaVectores':
+    if len(args) != 2:
+        print('restaVectores requires 2 args')
+        sys.exit(1)
+    pp.pprint(client.restaVectores(eval(args[0]), eval(args[1]),))
+
+elif cmd == 'multVectores':
+    if len(args) != 2:
+        print('multVectores requires 2 args')
+        sys.exit(1)
+    pp.pprint(client.multVectores(eval(args[0]), eval(args[1]),))
+
+elif cmd == 'divVectores':
+    if len(args) != 2:
+        print('divVectores requires 2 args')
+        sys.exit(1)
+    pp.pprint(client.divVectores(eval(args[0]), eval(args[1]),))
 
 else:
     print('Unrecognized method %s' % cmd)
