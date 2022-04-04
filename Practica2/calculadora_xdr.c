@@ -6,15 +6,51 @@
 #include "calculadora.h"
 
 bool_t
-xdr_inputs (XDR *xdrs, inputs *objp)
+xdr_suma_1_argument (XDR *xdrs, suma_1_argument *objp)
 {
-	register int32_t *buf;
+	 if (!xdr_double (xdrs, &objp->arg1))
+		 return FALSE;
+	 if (!xdr_double (xdrs, &objp->arg2))
+		 return FALSE;
+	return TRUE;
+}
 
-	 if (!xdr_float (xdrs, &objp->num1))
+bool_t
+xdr_resta_1_argument (XDR *xdrs, resta_1_argument *objp)
+{
+	 if (!xdr_double (xdrs, &objp->arg1))
 		 return FALSE;
-	 if (!xdr_float (xdrs, &objp->num2))
+	 if (!xdr_double (xdrs, &objp->arg2))
 		 return FALSE;
-	 if (!xdr_char (xdrs, &objp->operador))
+	return TRUE;
+}
+
+bool_t
+xdr_mul_1_argument (XDR *xdrs, mul_1_argument *objp)
+{
+	 if (!xdr_double (xdrs, &objp->arg1))
+		 return FALSE;
+	 if (!xdr_double (xdrs, &objp->arg2))
+		 return FALSE;
+	return TRUE;
+}
+
+bool_t
+xdr_div_1_argument (XDR *xdrs, div_1_argument *objp)
+{
+	 if (!xdr_double (xdrs, &objp->arg1))
+		 return FALSE;
+	 if (!xdr_double (xdrs, &objp->arg2))
+		 return FALSE;
+	return TRUE;
+}
+
+bool_t
+xdr_pot_1_argument (XDR *xdrs, pot_1_argument *objp)
+{
+	 if (!xdr_double (xdrs, &objp->arg1))
+		 return FALSE;
+	 if (!xdr_double (xdrs, &objp->arg2))
 		 return FALSE;
 	return TRUE;
 }

@@ -14,54 +14,115 @@ extern "C" {
 #endif
 
 
-struct inputs {
-	float num1;
-	float num2;
-	char operador;
+struct suma_1_argument {
+	double arg1;
+	double arg2;
 };
-typedef struct inputs inputs;
+typedef struct suma_1_argument suma_1_argument;
+
+struct resta_1_argument {
+	double arg1;
+	double arg2;
+};
+typedef struct resta_1_argument resta_1_argument;
+
+struct mul_1_argument {
+	double arg1;
+	double arg2;
+};
+typedef struct mul_1_argument mul_1_argument;
+
+struct div_1_argument {
+	double arg1;
+	double arg2;
+};
+typedef struct div_1_argument div_1_argument;
+
+struct pot_1_argument {
+	double arg1;
+	double arg2;
+};
+typedef struct pot_1_argument pot_1_argument;
 
 #define CALCULADORAPROG 0x2fffffff
 #define CALCULADORA 1
 
 #if defined(__STDC__) || defined(__cplusplus)
 #define SUMA 1
-extern  float * suma_1(inputs , CLIENT *);
-extern  float * suma_1_svc(inputs , struct svc_req *);
+extern  double * suma_1(double , double , CLIENT *);
+extern  double * suma_1_svc(double , double , struct svc_req *);
 #define RESTA 2
-extern  float * resta_1(inputs , CLIENT *);
-extern  float * resta_1_svc(inputs , struct svc_req *);
+extern  double * resta_1(double , double , CLIENT *);
+extern  double * resta_1_svc(double , double , struct svc_req *);
 #define MUL 3
-extern  float * mul_1(inputs , CLIENT *);
-extern  float * mul_1_svc(inputs , struct svc_req *);
+extern  double * mul_1(double , double , CLIENT *);
+extern  double * mul_1_svc(double , double , struct svc_req *);
 #define DIV 4
-extern  float * div_1(inputs , CLIENT *);
-extern  float * div_1_svc(inputs , struct svc_req *);
+extern  double * div_1(double , double , CLIENT *);
+extern  double * div_1_svc(double , double , struct svc_req *);
+#define ABS 5
+extern  double * abs_1(double , CLIENT *);
+extern  double * abs_1_svc(double , struct svc_req *);
+#define POT 6
+extern  double * pot_1(double , double , CLIENT *);
+extern  double * pot_1_svc(double , double , struct svc_req *);
+#define RAIZ 7
+extern  double * raiz_1(double , CLIENT *);
+extern  double * raiz_1_svc(double , struct svc_req *);
+#define FACT 8
+extern  double * fact_1(double , CLIENT *);
+extern  double * fact_1_svc(double , struct svc_req *);
+#define LOG 9
+extern  double * log_1(double , CLIENT *);
+extern  double * log_1_svc(double , struct svc_req *);
 extern int calculadoraprog_1_freeresult (SVCXPRT *, xdrproc_t, caddr_t);
 
 #else /* K&R C */
 #define SUMA 1
-extern  float * suma_1();
-extern  float * suma_1_svc();
+extern  double * suma_1();
+extern  double * suma_1_svc();
 #define RESTA 2
-extern  float * resta_1();
-extern  float * resta_1_svc();
+extern  double * resta_1();
+extern  double * resta_1_svc();
 #define MUL 3
-extern  float * mul_1();
-extern  float * mul_1_svc();
+extern  double * mul_1();
+extern  double * mul_1_svc();
 #define DIV 4
-extern  float * div_1();
-extern  float * div_1_svc();
+extern  double * div_1();
+extern  double * div_1_svc();
+#define ABS 5
+extern  double * abs_1();
+extern  double * abs_1_svc();
+#define POT 6
+extern  double * pot_1();
+extern  double * pot_1_svc();
+#define RAIZ 7
+extern  double * raiz_1();
+extern  double * raiz_1_svc();
+#define FACT 8
+extern  double * fact_1();
+extern  double * fact_1_svc();
+#define LOG 9
+extern  double * log_1();
+extern  double * log_1_svc();
 extern int calculadoraprog_1_freeresult ();
 #endif /* K&R C */
 
 /* the xdr functions */
 
 #if defined(__STDC__) || defined(__cplusplus)
-extern  bool_t xdr_inputs (XDR *, inputs*);
+extern  bool_t xdr_suma_1_argument (XDR *, suma_1_argument*);
+extern  bool_t xdr_resta_1_argument (XDR *, resta_1_argument*);
+extern  bool_t xdr_mul_1_argument (XDR *, mul_1_argument*);
+extern  bool_t xdr_div_1_argument (XDR *, div_1_argument*);
+extern  bool_t xdr_pot_1_argument (XDR *, pot_1_argument*);
 
 #else /* K&R C */
-extern bool_t xdr_inputs ();
+extern bool_t xdr_suma_1_argument ();
+extern bool_t xdr_resta_1_argument ();
+extern bool_t xdr_mul_1_argument ();
+extern bool_t xdr_div_1_argument ();
+extern bool_t xdr_pot_1_argument ();
 
 #endif /* K&R C */
 

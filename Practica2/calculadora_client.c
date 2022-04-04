@@ -7,71 +7,125 @@
 #include "calculadora.h"
 
 
-float	//Tiene que ser float para devolver el valor
-calculadoraprog_1(char *host, float n1, float n2, char op, CLIENT *clnt)
+double
+calculadoraprog_1(char *host, double n1, double n2, char op, CLIENT *clnt)
 {
-	//CLIENT *clnt;
-	float  *result_1; //Resultado suma
-	inputs suma_1_arg1;	//Datos de entrada para suma
-	float  *result_2; //Resultado resta
-	inputs resta_1_arg1; //Datos de entrada para resta
-	float  *result_3; //Resultado multiplicacion
-	inputs mul_1_arg1; //Datos entrada mult
-	float  *result_4; //Resultado division
-	inputs div_1_arg1; //Datos entrada div
+	//SUMA
+	double  *result_1;
+	double suma_1_arg1;
+	double suma_1_arg2;
+	//RESTA
+	double  *result_2;
+	double resta_1_arg1;
+	double resta_1_arg2;
+	//MULT
+	double  *result_3;
+	double mul_1_arg1;
+	double mul_1_arg2;
+	//DIV
+	double  *result_4;
+	double div_1_arg1;
+	double div_1_arg2;
+	//VALOR ABS
+	double  *result_5;
+	double abs_1_arg1;
+	//POTENCIA
+	double  *result_6;
+	double pot_1_arg1;
+	double pot_1_arg2;
+	//RAIZ CUADRADA
+	double  *result_7;
+	double raiz_1_arg1;
+	//FACTORIAL
+	double  *result_8;
+	double fact_1_arg1;
+	//LOGARITMO (BASE 10)
+	double  *result_9;
+	double log_1_arg1;
 
-
-	//Comprobamos que operacion se quiere realizar
 	switch (op)
 	{
 	case '+':
-		suma_1_arg1.num1=n1;
-		suma_1_arg1.num2=n2;
-		suma_1_arg1.operador=op;
-		result_1 = suma_1(suma_1_arg1, clnt);
-		if(result_1 == (float *) NULL)
-			clnt_perror(clnt, "Error: valor de la suma es nulo");
-		
+		suma_1_arg1=n1;
+		suma_1_arg2=n2;
+		result_1 = suma_1(suma_1_arg1, suma_1_arg2, clnt);
+		if (result_1 == (double *) NULL) {
+			clnt_perror (clnt, "call failed");
+		}
 		return *result_1;
 		break;
 	case '-':
-		resta_1_arg1.num1=n1;
-		resta_1_arg1.num2=n2;
-		resta_1_arg1.operador=op;
-
-		result_2 = resta_1(resta_1_arg1, clnt);
-		if(result_2 == (float *) NULL)
-			clnt_perror(clnt, "Error: valor de la resta es nulo");
-		
+		resta_1_arg1=n1;
+		resta_1_arg2=n2;
+		printf("Va a restar\n");
+		result_2 = resta_1(resta_1_arg1, resta_1_arg2, clnt);
+		if (result_2 == (double *) NULL) {
+			clnt_perror (clnt, "call failed");
+		}
 		return *result_2;
 		break;
 	case 'x':
-		mul_1_arg1.num1=n1;
-		mul_1_arg1.num2=n2;
-		mul_1_arg1.operador=op;
-
-		result_3 = mul_1(mul_1_arg1, clnt);
-		if(result_3 == (float *) NULL)
-			clnt_perror(clnt, "Error: valor de la multiplicacion es nulo");
-		
+		mul_1_arg1=n1;
+		mul_1_arg2=n2;
+		result_3 = mul_1(mul_1_arg1, mul_1_arg2, clnt);
+		if (result_3 == (double *) NULL) {
+			clnt_perror (clnt, "call failed");
+		}
 		return *result_3;
 		break;
 	case '/':
-		div_1_arg1.num1=n1;
-		div_1_arg1.num2=n2;
-		div_1_arg1.operador=op;
-
-		result_4 = div_1(div_1_arg1, clnt);
-		if(result_4 == (float *) NULL)
-			clnt_perror(clnt, "Error: valor de la division es nulo");
-		
+		div_1_arg1=n1;
+		div_1_arg2=n2;
+		result_4 = div_1(div_1_arg1, div_1_arg2, clnt);
+		if (result_4 == (double *) NULL) {
+			clnt_perror (clnt, "call failed");
+		}
 		return *result_4;
-		break;	
-	//Si no es ninguno de esos operadores, falla
+		break;
+	case 'a':
+		abs_1_arg1=n1;
+		result_5 = abs_1(abs_1_arg1, clnt);
+		if (result_5 == (double *) NULL) {
+			clnt_perror (clnt, "call failed");
+		}
+		return *result_5;
+		break;
+	case 'p':
+		pot_1_arg1=n1;
+		pot_1_arg2=n2;
+		result_6 = pot_1(pot_1_arg1, pot_1_arg2, clnt);
+		if (result_6 == (double *) NULL) {
+			clnt_perror (clnt, "call failed");
+		}
+		return *result_6;
+		break;
+	case 'r':
+		raiz_1_arg1=n1;
+		result_7 = raiz_1(raiz_1_arg1, clnt);
+		if (result_7 == (double *) NULL) {
+			clnt_perror (clnt, "call failed");
+		}
+		return *result_7;
+		break;
+	case '!':
+		fact_1_arg1=n1;
+		result_8 = fact_1(fact_1_arg1, clnt);
+		if (result_8 == (double *) NULL) {
+			clnt_perror (clnt, "call failed");
+		}
+		return *result_8;
+		break;
+	case 'l':
+		log_1_arg1=n1;
+		result_9 = log_1(log_1_arg1, clnt);
+		if (result_9 == (double *) NULL) {
+			clnt_perror (clnt, "call failed");
+		}
+		return *result_9;
+		break;
 	default:
 		break;
 	}
-
 
 #ifndef	DEBUG
 	clnt = clnt_create (host, CALCULADORAPROG, CALCULADORA, "udp");
@@ -81,20 +135,40 @@ calculadoraprog_1(char *host, float n1, float n2, char op, CLIENT *clnt)
 	}
 #endif	/* DEBUG */
 
-	result_1 = suma_1(suma_1_arg1, clnt);
-	if (result_1 == (float *) NULL) {
+	result_1 = suma_1(suma_1_arg1, suma_1_arg2, clnt);
+	if (result_1 == (double *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
-	result_2 = resta_1(resta_1_arg1, clnt);
-	if (result_2 == (float *) NULL) {
+	result_2 = resta_1(resta_1_arg1, resta_1_arg2, clnt);
+	if (result_2 == (double *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
-	result_3 = mul_1(mul_1_arg1, clnt);
-	if (result_3 == (float *) NULL) {
+	result_3 = mul_1(mul_1_arg1, mul_1_arg2, clnt);
+	if (result_3 == (double *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
-	result_4 = div_1(div_1_arg1, clnt);
-	if (result_4 == (float *) NULL) {
+	result_4 = div_1(div_1_arg1, div_1_arg2, clnt);
+	if (result_4 == (double *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_5 = abs_1(abs_1_arg1, clnt);
+	if (result_5 == (double *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_6 = pot_1(pot_1_arg1, pot_1_arg2, clnt);
+	if (result_6 == (double *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_7 = raiz_1(raiz_1_arg1, clnt);
+	if (result_7 == (double *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_8 = fact_1(fact_1_arg1, clnt);
+	if (result_8 == (double *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+	result_9 = log_1(log_1_arg1, clnt);
+	if (result_9 == (double *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
 #ifndef	DEBUG
@@ -107,22 +181,29 @@ int
 main (int argc, char *argv[])
 {
 	char *host;
-	float a, b;
-	char opr;
+	char op;
 	CLIENT *clnt;
+	double num1=0, num2=0;
 
 	if (argc < 2) {
 		printf ("usage: %s server_host\n", argv[0]);
 		exit (1);
 	}
-	a = atof(argv[2]);
-	printf("OP1=%f\n",a);
-	opr = argv[3][0];
-	printf("Operador=%c\n",opr);
-	b = atof(argv[4]);
-	printf("OP2=%f\n",b);
-	printf("CALCULADORA\n");
 	host = argv[1];
+
+	printf("Bienvenido a la Calculadora,\nElija la operación que desea realizar entre las disponibles: \n");
+	
+	printf("Suma: + | Resta: - | Multiplicación: x | División: / | Valor Absoluto: a | Potencia: p |\n Raíz cuadrada: r | Factorial: ! | Logaritmo (en base 10): l \n");
+	scanf("%c", &op);
+
+	if(op == 'a' || op == 'r' || op == '!' || op == 'l'){
+		printf("Introduzca el número que desea operar: \n");
+		scanf("%lf", &num1);
+	}
+	else{
+		printf("Introduzca los números con los que desea operar: ");
+		scanf("%lf %lf", &num1, &num2);
+	}
 
 	clnt = clnt_create (host, CALCULADORAPROG, CALCULADORA, "udp");
 	if (clnt == NULL) {
@@ -130,7 +211,6 @@ main (int argc, char *argv[])
 		exit (1);
 	}
 
-	printf("RESULTADO: %.2f\n", calculadoraprog_1(host, a, b, opr, clnt));
-	
+	printf("Resultado: %lf\n", calculadoraprog_1 (host, num1, num2, op, clnt));
 exit (0);
 }

@@ -16,38 +16,75 @@
 #define SIG_PF void(*)(int)
 #endif
 
-static float *
-_suma_1 (inputs  *argp, struct svc_req *rqstp)
+static double *
+_suma_1 (suma_1_argument *argp, struct svc_req *rqstp)
 {
-	return (suma_1_svc(*argp, rqstp));
+	printf("Entra en suma svc\n");
+	return (suma_1_svc(argp->arg1, argp->arg2, rqstp));
 }
 
-static float *
-_resta_1 (inputs  *argp, struct svc_req *rqstp)
+static double *
+_resta_1 (resta_1_argument *argp, struct svc_req *rqstp)
 {
-	return (resta_1_svc(*argp, rqstp));
+	printf("Entra en resta svc\n");
+	return (resta_1_svc(argp->arg1, argp->arg2, rqstp));
 }
 
-static float *
-_mul_1 (inputs  *argp, struct svc_req *rqstp)
+static double *
+_mul_1 (mul_1_argument *argp, struct svc_req *rqstp)
 {
-	return (mul_1_svc(*argp, rqstp));
+	return (mul_1_svc(argp->arg1, argp->arg2, rqstp));
 }
 
-static float *
-_div_1 (inputs  *argp, struct svc_req *rqstp)
+static double *
+_div_1 (div_1_argument *argp, struct svc_req *rqstp)
 {
-	return (div_1_svc(*argp, rqstp));
+	return (div_1_svc(argp->arg1, argp->arg2, rqstp));
+}
+
+static double *
+_abs_1 (double  *argp, struct svc_req *rqstp)
+{
+	return (abs_1_svc(*argp, rqstp));
+}
+
+static double *
+_pot_1 (pot_1_argument *argp, struct svc_req *rqstp)
+{
+	return (pot_1_svc(argp->arg1, argp->arg2, rqstp));
+}
+
+static double *
+_raiz_1 (double  *argp, struct svc_req *rqstp)
+{
+	return (raiz_1_svc(*argp, rqstp));
+}
+
+static double *
+_fact_1 (double  *argp, struct svc_req *rqstp)
+{
+	return (fact_1_svc(*argp, rqstp));
+}
+
+static double *
+_log_1 (double  *argp, struct svc_req *rqstp)
+{
+	return (log_1_svc(*argp, rqstp));
 }
 
 static void
 calculadoraprog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 {
 	union {
-		inputs suma_1_arg;
-		inputs resta_1_arg;
-		inputs mul_1_arg;
-		inputs div_1_arg;
+		suma_1_argument suma_1_arg;
+		resta_1_argument resta_1_arg;
+		mul_1_argument mul_1_arg;
+		div_1_argument div_1_arg;
+		double abs_1_arg;
+		pot_1_argument pot_1_arg;
+		double raiz_1_arg;
+		double fact_1_arg;
+		double log_1_arg;
 	} argument;
 	char *result;
 	xdrproc_t _xdr_argument, _xdr_result;
@@ -59,27 +96,57 @@ calculadoraprog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		return;
 
 	case SUMA:
-		_xdr_argument = (xdrproc_t) xdr_inputs;
-		_xdr_result = (xdrproc_t) xdr_float;
+		_xdr_argument = (xdrproc_t) xdr_suma_1_argument;
+		_xdr_result = (xdrproc_t) xdr_double;
 		local = (char *(*)(char *, struct svc_req *)) _suma_1;
 		break;
 
 	case RESTA:
-		_xdr_argument = (xdrproc_t) xdr_inputs;
-		_xdr_result = (xdrproc_t) xdr_float;
+		_xdr_argument = (xdrproc_t) xdr_resta_1_argument;
+		_xdr_result = (xdrproc_t) xdr_double;
 		local = (char *(*)(char *, struct svc_req *)) _resta_1;
 		break;
 
 	case MUL:
-		_xdr_argument = (xdrproc_t) xdr_inputs;
-		_xdr_result = (xdrproc_t) xdr_float;
+		_xdr_argument = (xdrproc_t) xdr_mul_1_argument;
+		_xdr_result = (xdrproc_t) xdr_double;
 		local = (char *(*)(char *, struct svc_req *)) _mul_1;
 		break;
 
 	case DIV:
-		_xdr_argument = (xdrproc_t) xdr_inputs;
-		_xdr_result = (xdrproc_t) xdr_float;
+		_xdr_argument = (xdrproc_t) xdr_div_1_argument;
+		_xdr_result = (xdrproc_t) xdr_double;
 		local = (char *(*)(char *, struct svc_req *)) _div_1;
+		break;
+
+	case ABS:
+		_xdr_argument = (xdrproc_t) xdr_double;
+		_xdr_result = (xdrproc_t) xdr_double;
+		local = (char *(*)(char *, struct svc_req *)) _abs_1;
+		break;
+
+	case POT:
+		_xdr_argument = (xdrproc_t) xdr_pot_1_argument;
+		_xdr_result = (xdrproc_t) xdr_double;
+		local = (char *(*)(char *, struct svc_req *)) _pot_1;
+		break;
+
+	case RAIZ:
+		_xdr_argument = (xdrproc_t) xdr_double;
+		_xdr_result = (xdrproc_t) xdr_double;
+		local = (char *(*)(char *, struct svc_req *)) _raiz_1;
+		break;
+
+	case FACT:
+		_xdr_argument = (xdrproc_t) xdr_double;
+		_xdr_result = (xdrproc_t) xdr_double;
+		local = (char *(*)(char *, struct svc_req *)) _fact_1;
+		break;
+
+	case LOG:
+		_xdr_argument = (xdrproc_t) xdr_double;
+		_xdr_result = (xdrproc_t) xdr_double;
+		local = (char *(*)(char *, struct svc_req *)) _log_1;
 		break;
 
 	default:

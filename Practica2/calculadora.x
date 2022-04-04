@@ -1,14 +1,13 @@
-struct inputs{
-    float num1;
-    float num2;
-    char operador;
-};
-
 program CALCULADORAPROG{
     version CALCULADORA{
-        float SUMA(inputs)=1;
-        float RESTA(inputs)=2;
-        float MUL(inputs)=3;
-        float DIV(inputs)=4;
+        double SUMA(double, double)=1;
+        double RESTA(double, double)=2;
+        double MUL(double, double)=3;
+        double DIV(double, double)=4;
+        double ABS(double)=5;
+        double POT(double, double)=6;
+        double RAIZ(double)=7;
+        double FACT(double)=8;
+        double LOG(double)=9;
     }=1;
 }=0x2fffffff;
