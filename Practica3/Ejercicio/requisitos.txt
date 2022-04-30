@@ -1,24 +1,38 @@
 Causa Humanitaria
-1. Servidor replicado -> 2 réplicas del servidor. Cada réplica desplegada en una máquina diferente (terminal), 
-    y estará encargada de recibir donaciones de entidades (clientes) para una causa humanitaria.
+1. Servidor replicado -> 2 réplicas del servidor. Cada réplica desplegada
+ en una máquina diferente (terminal), y estará encargada de recibir 
+ donaciones de entidades (clientes) para una causa humanitaria.
 
 2. El servidor proporcionará dos operaciones: 
         - Registro de una entidad interesada (cliente) en la causa.
         - Depóstio de una donación a la causa.
-    No se puede realizar un depósito (o más) sin haberse registrado previamente.
+    No se puede realizar un depósito (o más) sin haberse registrado 
+    previamente.
 
-3. Cuando una entidad desea registrarse y contacta con cualquiera de las dos réplicas del servidor, entonces el registro del cliente debe 
-ocurrir realmente y de forma transparente en la réplica con menos entidades registradas. Es decir, el cliente sólo se ha dirigido a una réplica 
-aunque esta no haya sido donde realmente ha quedado registrado, pero a partir de ese momento, el cliente realizará los depósitos en la réplica 
-del servidor donde ha sido registrado. -> AL hacer el registro, que el dato Cliente se guarde en el servidor donde num_clientes sea menor.
+3. Cuando una entidad desea registrarse y contacta con cualquiera de las 
+dos réplicas del servidor, entonces el registro del cliente debe ocurrir
+realmente y de forma transparente en la réplica con menos entidades 
+registradas. Es decir, el cliente sólo se ha dirigido a una réplica 
+aunque esta no haya sido donde realmente ha quedado registrado, pero 
+a partir de ese momento, el cliente realizará los depósitos en la réplica 
+del servidor donde ha sido registrado. -> Al hacer el registro, que el 
+dato Cliente se guarde en el servidor donde num_clientes sea menor.
 
-4. Cada réplica del servidor mantendrá el subtotal de las donaciones realizadas en dicha réplica.
+4. Cada réplica del servidor mantendrá el subtotal de las donaciones 
+realizadas en dicha réplica.
 
-5. Un cliente no podrá registrarse más de una vez, ni siquiera en réplicas distintas -> Comprueba el dato Cliente en ambas réplicas.
+5. Un cliente no podrá registrarse más de una vez, ni siquiera en 
+réplicas distintas -> Comprueba el dato Cliente en ambas réplicas.
 
-6. Los servidores ofrecerán una operación de consulta del total donado en un momento dado. Dicha operación sólo podrá llevarse a cabo 
-si el cliente previamente se ha registrado y ha realizado al menos un depósito. Cuando un cliente consulte la cantidad total donada hasta el momento, 
-sólo hará la petición a la réplica donde se encuentra registrado, y ésta será la encargada, realizando la operación oportuna con la otra réplica,
-de devolver el total donado hasta el momento. -> Los servidores tienen que almacenar la info de cada usuario con su donacion total, y en caso de que 
-el cliente solicite ver el total donado, habrá que sumar lo de ambos servidores y que lo devuelva aquel en el que está registrado. El cliente no puede
-hacer esta petición a la réplica en la que no está registrado.
+6. Los servidores ofrecerán una operación de consulta del total donado 
+en un momento dado. Dicha operación sólo podrá llevarse a cabo 
+si el cliente previamente se ha registrado y ha realizado al menos un 
+depósito. Cuando un cliente consulte la cantidad total donada hasta el 
+momento, sólo hará la petición a la réplica donde se encuentra 
+registrado, y ésta será la encargada, realizando la operación oportuna 
+con la otra réplica, de devolver el total donado hasta el momento. -> 
+Los servidores tienen que almacenar la info de cada usuario con su 
+donacion total, y en caso de que el cliente solicite ver el total donado, 
+habrá que sumar lo de ambos servidores y que lo devuelva aquel en el que 
+está registrado. El cliente no puede hacer esta petición a la réplica 
+en la que no está registrado.
