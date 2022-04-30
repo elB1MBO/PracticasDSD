@@ -19,7 +19,10 @@ public class servidor1 extends UnicastRemoteObject implements iservidor{
     }
 
     public void registrarCliente(String cliente) throws RemoteException{
-        clientes.add(cliente);
+        if(buscarCliente(cliente) != -1) //Un cliente no puede registrarse 2 veces
+            clientes.add(cliente);
+        else
+            System.out.println("Error: El cliente ya está registrado.");
     }
 
     public void addDonacion(int donacion, String cliente) throws RemoteException{
