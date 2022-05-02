@@ -20,18 +20,16 @@ public class servidor {
             // Crea una instancia de donacion
             // System.setProperty("java.rmi.server.hostname","192.168.1.107");
             Registry reg = LocateRegistry.createRegistry(1099);
-            /* Donacion miDonador = new Donacion();
-            Naming.rebind("miDonador", miDonador); */
             replica replica1 = new replica("replica1");
             replica replica2 = new replica("replica2");
-            Naming.rebind("replica1", replica1);
-            Naming.rebind("replica2", replica2);
+            reg.rebind("replica1", replica1);
+            reg.rebind("replica2", replica2);
             //Una vez tenemos nuestras 2 réplicas, tenemos que añadirla una a la otra para que se comuniquen
             replica1.addReplica(replica2);
             replica2.addReplica(replica1);
 
             System.out.println("Servidor RemoteException | MalformedURLExceptiondor preparado");
-        } catch (RemoteException | MalformedURLException e) {
+        } catch (RemoteException e) {
             System.out.println("Exception: " + e.getMessage());
         }
     }
