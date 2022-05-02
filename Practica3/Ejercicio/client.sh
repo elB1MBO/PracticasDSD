@@ -8,3 +8,8 @@ echo
 echo "Lanzando el segundo cliente"
 echo
 java -cp . -Djava.security.policy=server.policy cliente localhost cliente2 1000
+
+echo
+echo "Lanzando el tercer cliente"
+echo
+java -cp . -Djava.security.policy=server.policy cliente localhost cliente3 100

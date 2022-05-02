@@ -3,8 +3,10 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface iServerClient extends Remote{
-    public void registrar(String cliente) throws RemoteException;
-    public void donar(int donacion, String cliente) throws RemoteException;
-    public int getTotalDonadoCliente(String cliente) throws RemoteException;
-    public int getTotalDonadoReplica() throws RemoteException;
+    public String getId() throws RemoteException;
+    public String registrar(String cliente) throws RemoteException;
+    public String donar(int donacion, String cliente) throws RemoteException;
+    public String getTotalCliente(String cliente) throws RemoteException;
+    public String getTotalReplica() throws RemoteException;
+    public String retirarDonacion(int cantidad, String cliente) throws RemoteException;
 }   
