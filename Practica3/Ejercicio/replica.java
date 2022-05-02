@@ -11,12 +11,14 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
     private ArrayList<Integer> donaciones;
     private String id;
     private iServerServer replica;
+    private int totalDonado; //Total donado en la replica
     
 
     public replica(String id_replica) throws RemoteException{
         id = id_replica;
         clientes = new ArrayList<>();
         donaciones = new ArrayList<>();
+        totalDonado = 0;
     }
 
     //INTERFAZ SERVIDOR-SERVIDOR
@@ -50,7 +52,7 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
                 replica.registrarCliente(cliente);
             }
         } else {
-            System.out.println("Error: El cliente ya está registrado.\n");
+            System.out.println("Error en "+id+": El cliente ya está registrado.\n");
         }
     }
 
@@ -62,20 +64,32 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
             //System.out.println("Donacion: "+actual+", donaciones: "+donaciones.get(i));
             //Y cambia el valor en su respectiva posicion de donaciones
             donaciones.set(i, actual+=donacion);
-            System.out.println("Donacion de "+donacion+" añadida en la "+id+"\n");
+            System.out.println("Donacion de "+donacion+" añadida en la "+id+" del "+cliente+"\n");
+            totalDonado += donacion;
         } else { //Si no, manda a la otra réplica que haga la donacion
             replica.addDonacion(donacion, cliente);
         }
     }
-
-    public int getTotalDonado(String cliente) throws RemoteException{
+    //Devuelve el total donado por el cliente
+    public int getTotalDonadoCliente(String cliente) throws RemoteException{
+        //Un cliente solo puede hacer esta consulta si esta es la replica en la que esta registrado
         if(buscarCliente(cliente) != -1){
             int i = buscarCliente(cliente);
-            System.out.println("Donacion total del cliente "+cliente+" en la "+id+"\n");
-            return donaciones.get(i);
+            if(donaciones.get(i) > 0){
+                System.out.println("Donacion total del cliente "+cliente+" en la "+id+": "+donaciones.get(i)+"\n");
+                return donaciones.get(i);
+            } else {
+                System.out.println("Error en "+id+": El "+cliente+" no ha realizado ninguna donación aún.\n");
+                return -1;
+            }
         } else {
-            return replica.getTotalDonado(cliente);
+            System.out.println("Error en "+id+" : Ésta no es la réplica en la que está registrado el "+cliente+"\n");
+            return -1;
         }
+    }
+    //Devuelve el total donado en la réplica
+    public int getTotalDonadoReplica() throws RemoteException{
+        return totalDonado;
     }
 
     //INTERFAZ SERVIDOR-CLIENTE
@@ -90,7 +104,5 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
     public void donar(int donacion, String cliente) throws RemoteException {
         addDonacion(donacion, cliente);
     }
-
-    
 
 }

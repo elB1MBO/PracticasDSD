@@ -28,7 +28,7 @@ public class servidor {
             replica1.addReplica(replica2);
             replica2.addReplica(replica1);
 
-            System.out.println("Servidor RemoteException | MalformedURLExceptiondor preparado");
+            System.out.println("Servidor RemoteException preparado");
         } catch (RemoteException e) {
             System.out.println("Exception: " + e.getMessage());
         }

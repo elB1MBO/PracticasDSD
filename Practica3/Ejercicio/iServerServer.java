@@ -8,5 +8,6 @@ public interface iServerServer extends Remote{
     public int buscarCliente(String cliente) throws RemoteException;
     public void registrarCliente(String cliente) throws RemoteException;
     public void addDonacion(int donacion, String cliente) throws RemoteException;
-    public int getTotalDonado(String cliente) throws RemoteException;
+    public int getTotalDonadoCliente(String cliente) throws RemoteException;
+    public int getTotalDonadoReplica() throws RemoteException;
 }   
