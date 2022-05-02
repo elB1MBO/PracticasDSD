@@ -48,6 +48,26 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
         return clientes.indexOf(cliente);
     }
 
+    //Devuelve el indice de la replica con menor numero de clientes registrados
+    public int getReplicaMenor() throws RemoteException{
+        int num_clientes = clientes.size();
+        int ireplica = -1;
+        for(int i=0; i<replicas.size(); i++){
+            if(replicas.get(i).getNumeroClientes() < num_clientes){
+                ireplica = i;
+            }
+        }
+        return ireplica;
+    }
+    //Devuelve el indice de la replica donde esta el cliente
+    public int getReplicaCliente(String cliente) throws RemoteException{
+        int ireplica = -1; //por defecto, no estará en ninguno
+        for(int i = 0; i<replicas.size() && ireplica == -1; i++){
+            ireplica = replicas.get(i).buscarCliente(cliente);
+        }
+        return ireplica;
+    }
+
     public boolean estaRegistrado(String cliente) throws RemoteException{
         if(buscarCliente(cliente) != -1)
             return true;
@@ -156,25 +176,7 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
             salida = "Introduce un valor positivo por favor.";
         }
     }
-    //Devuelve el indice de la replica con menor numero de clientes registrados
-    public int getReplicaMenor() throws RemoteException{
-        int num_clientes = clientes.size();
-        int ireplica = -1;
-        for(int i=0; i<replicas.size(); i++){
-            if(replicas.get(i).getNumeroClientes() < num_clientes){
-                ireplica = i;
-            }
-        }
-        return ireplica;
-    }
-    //Devuelve el indice de la replica donde esta el cliente
-    public int getReplicaCliente(String cliente) throws RemoteException{
-        int ireplica = -1; //por defecto, no estará en ninguno
-        for(int i = 0; i<replicas.size() && ireplica == -1; i++){
-            ireplica = replicas.get(i).buscarCliente(cliente);
-        }
-        return ireplica;
-    }
+    
 
     //INTERFAZ SERVIDOR-CLIENTE
 
