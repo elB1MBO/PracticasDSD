@@ -23,9 +23,9 @@ public class servidor {
             /* Donacion miDonador = new Donacion();
             Naming.rebind("miDonador", miDonador); */
             servidor1 server1 = new servidor1();
-            servidor2 server2 = new servidor2();
+            //servidor2 server2 = new servidor2();
             Naming.rebind("servidor1", server1);
-            Naming.rebind("servidor2", server2);
+            //Naming.rebind("servidor2", server2);
             System.out.println("Servidor RemoteException | MalformedURLExceptiondor preparado");
         } catch (RemoteException | MalformedURLException e) {
             System.out.println("Exception: " + e.getMessage());

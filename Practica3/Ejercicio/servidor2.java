@@ -1,5 +1,6 @@
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.net.MalformedURLException;
 
 public class servidor2 extends UnicastRemoteObject implements iservidor{
@@ -27,7 +28,7 @@ public class servidor2 extends UnicastRemoteObject implements iservidor{
     public void addDonacion(int donacion, String cliente) throws RemoteException{
         //Busca el indice del cliente
         int i = buscarCliente(cliente);
-        int actual = donaciones.get(i);
+        int actual = (int) donaciones.get(i);
         //Y cambia el valor en su respectiva posicion de donaciones
         donaciones.set(i, actual+=donacion);
     }
