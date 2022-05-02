@@ -11,6 +11,7 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
     private ArrayList<Integer> donaciones;
     private String id;
     private iServerServer replica;
+    private ArrayList<iServerServer> replicas;
     private int totalDonado; //Total donado en la replica
     public String salida = "";
 
@@ -18,11 +19,16 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
         id = id_replica;
         clientes = new ArrayList<>();
         donaciones = new ArrayList<>();
+        replicas = new ArrayList<>();
         totalDonado = 0;
     }
 
     
     //INTERFAZ SERVIDOR-SERVIDOR
+
+    public String getId() throws RemoteException{
+        return id;
+    }
 
     public String getSalida() throws RemoteException{
         return salida;
@@ -31,6 +37,7 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
     public void addReplica(replica rep) throws RemoteException {
         //Para hacerlo con más réplicas, habria que usar un array de replicas
         replica = rep;
+        replicas.add(rep);
     }
     //Comprueba el número de clientes que tiene esta réplica.
     public int getNumeroClientes() throws RemoteException {
@@ -41,9 +48,23 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
         return clientes.indexOf(cliente);
     }
 
+    public boolean estaRegistrado(String cliente) throws RemoteException{
+        if(buscarCliente(cliente) != -1)
+            return true;
+        else{
+            int ireplica = getReplicaCliente(cliente);
+            if(ireplica != -1)
+                return true;
+            else return false;
+        }
+    }
+
     public void registrarCliente(String cliente) throws RemoteException{
-        if(buscarCliente(cliente) == -1 && replica.buscarCliente(cliente) == -1){ //Comprueba que no esté ya registrado en alguna réplica
-            if(getNumeroClientes() <= replica.getNumeroClientes()){
+        int ireplica = getReplicaCliente(cliente);
+        //if(buscarCliente(cliente) == -1 && replica.buscarCliente(cliente) == -1){ //Comprueba que no esté ya registrado en alguna réplica
+        if(!estaRegistrado(cliente)){ //Comprueba que no esté ya registrado en alguna réplica
+            ireplica = getReplicaMenor();
+            if(ireplica == -1){ //Si esta replica es la menor
                 //Un cliente no puede registrarse 2 veces
                 salida = "Cliente "+cliente+" registrado en la "+getId()+"\n";
                 System.out.println(salida);
@@ -52,12 +73,9 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
                 //Cuando se registra un cliente, hay que asociarle un indice en el array de donaciones
                 int indice = buscarCliente(cliente);
                 donaciones.add(indice, 0);
-
-                
             }
             else{
-                //Si la otra réplica tiene menos clientes que esta, la manda a registrarlo
-                replica.registrarCliente(cliente);
+                replicas.get(ireplica).registrarCliente(cliente);
             }
         } else {
             salida = "Error en "+getId()+": El cliente ya está registrado.\n";
@@ -67,6 +85,7 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
 
     public void addDonacion(int donacion, String cliente) throws RemoteException{
         if(donacion > 0){
+            int ireplica = getReplicaCliente(cliente);
             if(buscarCliente(cliente) != -1){ //Si el cliente está en esta replica, opera
                 //Busca el indice del cliente
                 int i = buscarCliente(cliente);
@@ -77,9 +96,11 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
                 totalDonado += donacion;
 
                 salida = cliente+" has donado "+donacion+" en la "+getId();
-            } else { //Si no, manda a la otra réplica que haga la donacion
-                replica.addDonacion(donacion, cliente);
-                salida = replica.getSalida(); //Para mostrar la salida cuando redirige la donacion
+            } else if(ireplica != -1){ //Si no, manda a la otra réplica que haga la donacion
+                replicas.get(ireplica).addDonacion(donacion, cliente);
+                salida = replicas.get(ireplica).getSalida(); //Para mostrar la salida cuando redirige la donacion
+            } else {
+                salida = "Error: no estas registrado en ninguna réplica.";
             }
         } else {
             salida = "No puedes robar dinero del servidor, introduce un valor positivo por favor.";
@@ -110,6 +131,7 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
 
     public void retirarDonacionCliente(int cantidad, String cliente) throws RemoteException{
         if(cantidad > 0){
+            int ireplica = getReplicaCliente(cliente);
             if(buscarCliente(cliente) != -1){ //Si el cliente está en esta replica, opera
                 //Busca el indice del cliente
                 int i = buscarCliente(cliente);
@@ -124,44 +146,61 @@ public class replica extends UnicastRemoteObject implements iServerServer, iServ
                 } else {
                     salida = "Error: la cantidad que desea sacar es mayor que la que ha donado.";
                 }
-            } else { //Si no, manda a la otra réplica que haga la donacion
-                replica.retirarDonacionCliente(cantidad, cliente);
-                salida = replica.getSalida(); //Para mostrar la salida cuando redirige la donacion
+            } else if (ireplica != -1){ //Si no, manda a la otra réplica que haga la donacion
+                replicas.get(ireplica).retirarDonacionCliente(cantidad, cliente);
+                salida = replicas.get(ireplica).getSalida(); //Para mostrar la salida cuando redirige la donacion
+            } else {
+                salida = "Error: no estas registrado en ninguna réplica.";
             }
         } else {
             salida = "Introduce un valor positivo por favor.";
         }
+    }
+    //Devuelve el indice de la replica con menor numero de clientes registrados
+    public int getReplicaMenor() throws RemoteException{
+        int num_clientes = clientes.size();
+        int ireplica = -1;
+        for(int i=0; i<replicas.size(); i++){
+            if(replicas.get(i).getNumeroClientes() < num_clientes){
+                ireplica = i;
+            }
+        }
+        return ireplica;
+    }
+    //Devuelve el indice de la replica donde esta el cliente
+    public int getReplicaCliente(String cliente) throws RemoteException{
+        int ireplica = -1; //por defecto, no estará en ninguno
+        for(int i = 0; i<replicas.size() && ireplica == -1; i++){
+            ireplica = replicas.get(i).buscarCliente(cliente);
+        }
+        return ireplica;
     }
 
     //INTERFAZ SERVIDOR-CLIENTE
 
     public String registrar(String cliente) throws RemoteException {
         registrarCliente(cliente);
-        return salida;
+        return getSalida();
     }
 
     public String donar(int donacion, String cliente) throws RemoteException {
         addDonacion(donacion, cliente);
-        return salida;
+        return getSalida();
     }
 
     public String getTotalCliente(String cliente) throws RemoteException{
         getTotalDonadoCliente(cliente);
-        return salida;
+        return getSalida();
     }
     
     public String getTotalReplica() throws RemoteException{
         getTotalDonadoReplica();
-        return salida;
-    }
-
-    public String getId() throws RemoteException{
-        return id;
+        return getSalida();
     }
 
     public String retirarDonacion(int cantidad, String cliente) throws RemoteException{
         retirarDonacionCliente(cantidad, cliente);
-        return salida;
+        return getSalida();
     }
 
 }

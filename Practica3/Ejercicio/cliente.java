@@ -27,7 +27,7 @@ public class cliente {
             System.out.println("Bienvenido al servicio de donaciones de DSD, "+cliente+".\n");
             while(!salir){
                 System.out.println("Eliga la réplica a la que quiere conectarse:");
-                System.out.println("1.- Réplica 1\n2.- Réplica 2");
+                System.out.println("1.- Réplica 1\n2.- Réplica 2\n3.- Réplica 3");
                 eleccion = entrada.nextInt();
                 switch (eleccion) {
                     case 1:
@@ -35,6 +35,9 @@ public class cliente {
                         break;
                     case 2:
                         servidor = (iServerClient) mireg.lookup("replica2");
+                        break;
+                    case 3:
+                        servidor = (iServerClient) mireg.lookup("replica3");
                         break;
                     default:
                         System.out.println("Error: valor introducido no válido. Introduzca 1 o 2 para seleccionar la réplica.");

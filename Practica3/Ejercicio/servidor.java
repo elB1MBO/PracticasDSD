@@ -22,12 +22,20 @@ public class servidor {
             Registry reg = LocateRegistry.createRegistry(1099);
             replica replica1 = new replica("replica1");
             replica replica2 = new replica("replica2");
+            replica replica3 = new replica("replica3");
             reg.rebind("replica1", replica1);
             reg.rebind("replica2", replica2);
+            reg.rebind("replica3", replica3);
             //Una vez tenemos nuestras 2 réplicas, tenemos que añadirla una a la otra para que se comuniquen
             replica1.addReplica(replica2);
-            replica2.addReplica(replica1);
+            replica1.addReplica(replica3);
 
+            replica2.addReplica(replica1);
+            replica2.addReplica(replica3);
+            
+            replica3.addReplica(replica1);
+            replica3.addReplica(replica2);
+            
             System.out.println("Servidor RemoteException preparado");
         } catch (RemoteException e) {
             System.out.println("Exception: " + e.getMessage());
