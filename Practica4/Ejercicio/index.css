@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+*{
+    color: black;
+    font-family: 'Open Sans', sans-serif;
+    box-sizing: border-box;
+}
+
+.header{
+    display: flex;
+    margin: 2% auto;
+    position: relative;
+}
+
+h1{
+    display: flex;
+    margin: auto;
+    position: relative;
+}
+
+p{
+    font-size: large;
+}
+
+#titulo-menu{
+    display: flex;
+    margin: auto;
+    position: relative;
+    background-color: rgb(156, 204, 250);
+}
+
+.menu{
+    width: 70%;
+    height: 80%;
+    margin: 2% auto;
+    position: relative;
+    background-color: rgb(156, 204, 250);
+    border-radius: 20px;
+    padding: 3%;
+}
+
+/*Contenedor de las imagenes*/
+.container-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 0px;
+}
+
+/*Toggle button*/
+
+.toggle-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.toggle{
+    position: relative;
+    width: 60px;
+    height: 34px;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: 0.3s;
+}
+
+.toggle .toggle-button{
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    bottom: 4px;
+    width: 26px;
+    height: 26px;
+    background: white;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.toggle.active{
+    background-color: #2196f3;
+}
+
+.toggle.active .toggle-button{
+    left: 28px;
+}
+
+.text{
+    position: absolute;
+    left: 30%;
+}
+
+/* .switch{
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+} */
+
+/*Hay que ocultar el checkbox por defecto de HTML*/
+/* .switch input{
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+  
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider{
+    background-color: #2196f3;
+}
+
+input:focus + .slider{
+    box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before{
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+ */
+/*Para que sea redondeado*/
+
+/* .slider.round {
+    border-radius: 34px;
+}
+  
+.slider.round:before {
+    border-radius: 50%;
+} */
+
+/*Para ajustar el grid de las imagenes cuando se reduce la pantalla por debajo de 80 rem (aprox. 1300px)*/
+/* @media screen and (max-width: 80rem) {
+    .container-grid{
+        display: grid;
+        grid-gap: 1rem;
+        grid-auto-rows: minmax(100px, auto);
+        grid-template-columns: repeat(auto-fill, minmax(min(100%,25rem), 1fr));
+    }
+} */
+
+.grid{
+    width: 100%;
+}
+
+
+.button {
+    position: relative;
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+    right: 10%;
+  }
+  
+.button:hover {background-color: #3e8e41}
+  
+.button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+#temp-btn{
+    background-color: #4CAF50;
+}
+
+#luz-btn{
+    top: 10%;
+    background-color: #d2d443;
+}

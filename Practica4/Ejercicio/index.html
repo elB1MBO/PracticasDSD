@@ -1,0 +1,185 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" href="index.css">
+        <title>Casa Domotica</title>
+    </head>
+    <body>
+        <div class="header">
+            <h1 id="titulo">Casa Domótica</h1>
+        </div>
+        <div class="menu">
+            <h1 id="titulo-menu">Menú Principal</h1>
+            <div class="container-grid">
+                <div class="grid">
+                    <h2>Sensores:</h2>
+                    <div class="sensor-temperatura" id="dato-temp">
+                        <p>Temperatura: <span class="datos" id="spanTemp">20º</span></p>
+                        
+                    </div>
+                    <div class="sensor-luz" id="dato-luz">
+                        <p>Luminosidad: <span class="datos" id="spanLuz">50%</span></p>
+                        
+                    </div>
+
+                    <button class="button" id="temp-btn">Cambiar Temperatura</button>
+                    <button class="button" id="luz-btn">Cambiar Luz</button>
+                </div>
+                <div class="grid">
+                    <h2>Dispositivos:</h2>
+                    <div class="sensor-temperatura">
+                        <p>Aire acondicionado</p>
+                        <div class="toggle-container">
+                            <div class="toggle" id="toggle-AC">
+                                <div class="toggle-button"></div>
+                            </div>
+                            <div class="text" id="textAC">OFF</div>
+                        </div>
+                    </div>
+                    <div class="sensor-luz">
+                        <p>Persianas</p>
+                        <div class="toggle-container">
+                            <div class="toggle" id="toggle-Pers">
+                                <div class="toggle-button"></div>
+                            </div>
+                            <div class="text" id="textPers">OFF</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid">
+                    <h2>Histórico:</h2>
+                    <div id="historico"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        var socket = io();
+
+        /*SENSORES*/
+        var divTemp = document.getElementById("dato-temp");
+        var divLuz = document.getElementById("dato-luz");
+        var botonT = document.getElementById("temp-btn");
+        var botonL = document.getElementById("luz-btn");
+
+        //Cuando se pulse el botón, cambiará la temperatura aleatoriamente entre 10 y 40
+        botonT.addEventListener("click", function(e){
+            e.preventDefault();
+            var temp = (Math.floor(Math.random()*30)+10) + "º";
+            socket.emit("change temp", temp);
+        });
+        //Cuando se pulse el boton, cambiará la luz entre 10 y 90 %
+        botonL.addEventListener("click", function(e){
+            e.preventDefault();
+            var luz = (Math.floor(Math.random()*90)+10) + "%";
+            socket.emit("change luz", luz);
+        });
+
+        //Cuando recibamos el change en el cliente, habrá que actualizar las entradas de la pagina
+        socket.on("change temp", function(temp){
+            var span = document.getElementById("spanTemp");
+            span.textContent = temp;
+            //divTemp.appendChild(p);
+        });
+        socket.on("change luz", function(luz){
+            var span = document.getElementById("spanLuz");
+            span.textContent = luz;
+        });
+
+        /*DISPOSITIVOS*/
+
+        //Aire acondicionado
+        var toggleAC = document.getElementById("toggle-AC");
+        var textAC = document.getElementById("textAC");
+
+        toggleAC.addEventListener("click", function(){
+            var estado = "";
+            //toggleAC.classList.toggle("active");
+            if(toggleAC.classList.contains("active")){
+                estado = "OFF";
+            } else {
+                estado = "ON";
+            }
+            socket.emit("toggle AC", estado);
+        });
+
+        function funcionAC(estado){
+            //Lo primero que hará al ser clickado es cambiar el estado del toggle
+            toggleAC.classList.toggle("active");
+            textAC.innerHTML = estado;
+        }
+        //Cambia el estado
+        socket.on("toggle AC", function(estado){
+            funcionAC(estado);
+        });
+
+        //Persianas
+        var togglePers = document.getElementById("toggle-Pers");
+        var textPers = document.getElementById("textPers");
+
+        togglePers.addEventListener("click", function(){
+            var estado = "";
+            //togglePers.classList.toggle("active");
+            if(togglePers.classList.contains("active")){
+                estado = "OFF";
+            } else {
+                estado = "ON";
+            }
+            socket.emit("toggle Pers", estado);
+        });
+
+        function funcionPers(estado){
+            //Lo primero que hará al ser clickado es cambiar el estado del toggle
+            togglePers.classList.toggle("active");
+            textPers.innerHTML = estado;
+        }
+        //Cambia el estado
+        socket.on("toggle Pers", function(estado){
+            funcionPers(estado);
+        });
+
+
+
+    </script>
+</html>
+
+
+
+
+
+
+
+
+<!--
+    /* function actualizarHistorico(historico){
+            var listContainer = document.getElementById("historico");
+            listContainer.innerHTML = "";
+            var listElement = document.createElement("ul");
+            listContainer.appendChild(listElement);
+
+            var num = historico.lenght;
+            for(var i=0; i<num; i++){
+                var listItem = document.createElement("li");
+                listItem.innerHTML = JSON.stringify(historico[i]);
+                listElement.appendChild(listItem);
+            }
+        }
+
+        var serviceURL = document.URL;
+        var socket = io.connect(serviceURL);
+
+        socket.on("my-address", function(data){
+            var d= new Date();
+            socket.emit("poner", {sensor:data.sensor, dispositivo:data.estado, time:d});
+            socket.emit("obtener", {sensor:data});
+        });
+        socket.on("obtener", function(data){
+            actualizarHistorico(data);
+        });
+        socket.on("disconnect", function(){
+            actualizarHistorico();
+        }); */
+
+-->
