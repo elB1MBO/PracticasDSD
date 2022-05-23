@@ -91,6 +91,16 @@ p{
     left: 30%;
 }
 
+.scroll-historico{
+    height: 300px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+#mensaje{
+    font-size: small;
+}
+
 /* .switch{
     position: relative;
     display: inline-block;

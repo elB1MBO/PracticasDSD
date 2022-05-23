@@ -14,11 +14,11 @@
                 <div class="grid">
                     <h2>Sensores:</h2>
                     <div class="sensor-temperatura" id="dato-temp">
-                        <p>Temperatura: <span class="datos" id="spanTemp">20º</span></p>
+                        <p>Temperatura: <span class="datos" id="spanTemp">20</span>º</p>
                         
                     </div>
                     <div class="sensor-luz" id="dato-luz">
-                        <p>Luminosidad: <span class="datos" id="spanLuz">50%</span></p>
+                        <p>Luminosidad: <span class="datos" id="spanLuz">50</span>%</p>
                         
                     </div>
 
@@ -48,7 +48,7 @@
                 </div>
                 <div class="grid">
                     <h2>Histórico:</h2>
-                    <div id="historico"></div>
+                    <div class="scroll-historico" id="historico"></div>
                 </div>
             </div>
         </div>
@@ -67,13 +67,13 @@
         //Cuando se pulse el botón, cambiará la temperatura aleatoriamente entre 10 y 40
         botonT.addEventListener("click", function(e){
             e.preventDefault();
-            var temp = (Math.floor(Math.random()*30)+10) + "º";
+            var temp = (Math.floor(Math.random()*30)+10);
             socket.emit("change temp", temp);
         });
         //Cuando se pulse el boton, cambiará la luz entre 10 y 90 %
         botonL.addEventListener("click", function(e){
             e.preventDefault();
-            var luz = (Math.floor(Math.random()*90)+10) + "%";
+            var luz = (Math.floor(Math.random()*90)+10);
             socket.emit("change luz", luz);
         });
 
@@ -81,7 +81,6 @@
         socket.on("change temp", function(temp){
             var span = document.getElementById("spanTemp");
             span.textContent = temp;
-            //divTemp.appendChild(p);
         });
         socket.on("change luz", function(luz){
             var span = document.getElementById("spanLuz");
@@ -140,6 +139,51 @@
             funcionPers(estado);
         });
 
+        function actualizarHistorico(msg) {
+            var historico = document.getElementById("historico");
+            var evento = "<p id='mensaje'> "+msg+" </p>";
+            historico.innerHTML += evento;
+            //Actualizar el scroll
+            historico.scrollTop = historico.scrollHeight;
+        }
+
+        //Cuando el servidor recibe un evento:
+        socket.on("log", function(msg){
+            actualizarHistorico(msg);
+        });
+        socket.on("aviso", function(msg){
+            agente(msg);
+            actualizarHistorico(msg);
+        });
+
+        //AGENTE
+        //El agente deberá estar escuchando los cambios de luz y temperatura igual que los clientes:
+        socket.on("change temp", function(temp){
+            if(temp>35){
+                agente("A/C", "ON");
+            } else if(temp<15) {
+                agente("A/C", "OFF");
+            }
+        });
+        socket.on("change luz", function(luz){
+            if(luz>90){
+                agente("Pers", "ON");
+            } else if(luz<10) {
+                agente("Pers", "OFF");
+            }
+        });
+
+        function agente(sensor, estado) {
+            //El agente comprueba que los valores no superen ciertos límites:
+            if(sensor === "A/C"){
+                socket.emit("accion agente", "A/C");
+                funcionAC(estado);
+            }
+            if(sensor === "Pers"){
+                socket.emit("accion agente", "Pers");
+                funcionPers(estado);
+            }
+        }
 
 
     </script>
