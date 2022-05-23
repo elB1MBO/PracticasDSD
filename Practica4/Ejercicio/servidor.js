@@ -3,6 +3,7 @@ var socketIO = require("socket.io");
 //El módulo FS nos permite trabajar con el sistema de archivos d enuestro ordenador
 //Con esto, podremos leer, crear, actualizar, borrar y renombrar archivos.
 var fs = require("fs");
+var path = require("path");
 //Este modulo convierte una dirección web en partes legibles
 //var url = require("url");
 
@@ -10,9 +11,11 @@ var fs = require("fs");
 var httpServer = http.createServer(
     function(request, response){
         //Con parse se devuelve un objeto URL con cada parte de la direccion como propiedad
-        var q = require("url").parse(request.url, true);
+        var q = require("url").parse(request.url).pathname;
         //Guardamos el nombre del objeto URL (pathname)
-        var filename = "." + q.pathname;
+        if (q=="/") q = "/index.html";
+		var filename = path.join(process.cwd(), q);
+        //var filename = "." + q.pathname;
         fs.readFile(filename, function(err, data){
             if(err){
                 response.writeHead(404, {"Content-Type": "text/html"});
@@ -84,6 +87,11 @@ MongoClient.connect(url, function(err, db){
         if(err) throw err;
         console.log("Colección " + collection.collectionName + " creada.");
     }); */
+
+    /**
+     * NOTA: No es necesario crear las colecciones, ya que cuando intente insertar
+     * un documento en esa colección, si no existe entonces la creará.
+     */
 
     //Conexión socket:
     io.sockets.on("connection", function(socket){

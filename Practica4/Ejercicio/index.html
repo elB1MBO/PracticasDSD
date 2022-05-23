@@ -48,7 +48,7 @@
                 </div>
                 <div class="grid">
                     <h2>Histórico:</h2>
-                    <div class="scroll-historico" id="historico"></div>
+                    <ol class="scroll-historico" id="historico"></ol>
                 </div>
             </div>
         </div>
@@ -141,7 +141,7 @@
 
         function actualizarHistorico(msg) {
             var historico = document.getElementById("historico");
-            var evento = "<p id='mensaje'> "+msg+" </p>";
+            var evento = "<li id='mensaje'> "+msg+" </li>";
             historico.innerHTML += evento;
             //Actualizar el scroll
             historico.scrollTop = historico.scrollHeight;
@@ -159,16 +159,16 @@
         //AGENTE
         //El agente deberá estar escuchando los cambios de luz y temperatura igual que los clientes:
         socket.on("change temp", function(temp){
-            if(temp>35){
+            if(temp>=35){
                 agente("A/C", "ON");
-            } else if(temp<15) {
+            } else if(temp<=15) {
                 agente("A/C", "OFF");
             }
         });
         socket.on("change luz", function(luz){
-            if(luz>90){
+            if(luz>=90){
                 agente("Pers", "ON");
-            } else if(luz<10) {
+            } else if(luz<=10) {
                 agente("Pers", "OFF");
             }
         });
@@ -188,42 +188,3 @@
 
     </script>
 </html>
-
-
-
-
-
-
-
-
-<!--
-    /* function actualizarHistorico(historico){
-            var listContainer = document.getElementById("historico");
-            listContainer.innerHTML = "";
-            var listElement = document.createElement("ul");
-            listContainer.appendChild(listElement);
-
-            var num = historico.lenght;
-            for(var i=0; i<num; i++){
-                var listItem = document.createElement("li");
-                listItem.innerHTML = JSON.stringify(historico[i]);
-                listElement.appendChild(listItem);
-            }
-        }
-
-        var serviceURL = document.URL;
-        var socket = io.connect(serviceURL);
-
-        socket.on("my-address", function(data){
-            var d= new Date();
-            socket.emit("poner", {sensor:data.sensor, dispositivo:data.estado, time:d});
-            socket.emit("obtener", {sensor:data});
-        });
-        socket.on("obtener", function(data){
-            actualizarHistorico(data);
-        });
-        socket.on("disconnect", function(){
-            actualizarHistorico();
-        }); */
-
--->

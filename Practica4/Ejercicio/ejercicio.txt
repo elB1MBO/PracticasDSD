@@ -1,4 +1,0 @@
-El ejercicio consiste en desarrollar con Node.js y Socket.IO el diseño e implementación de un sistema domótico
-El sistema domótico está compuesto por dos sensores (luminosidad y temperatura), dos actuadores (motor persiana y sistema de aire acondicionado)
-un servidor que sirve páginas para mostrar el estado y actuar sobre los elementos de la vivienda.
-El servidor es capaz de notificar alarmas y tomar decisiones básicas.

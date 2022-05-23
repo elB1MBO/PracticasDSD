@@ -93,11 +93,14 @@ p{
 
 .scroll-historico{
     height: 300px;
+    padding-left: 0;
     overflow: hidden;
     overflow-y: scroll;
+    flex-direction: column-reverse;
 }
 
 #mensaje{
+    list-style: none;
     font-size: small;
 }
 
